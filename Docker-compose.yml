@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  mysql:
+    build:
+      context: .
+      dockerfile: Dockerfile.mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: part1
+    ports:
+      - "4041:80"
+    container_name: mysql_server
+    networks:
+      - mon_reseau
+
+  phpmyadmin:
+    image: phpmyadmin
+    environment:
+      PMA_ARBITRARY: 1
+    ports:
+      - "4040:80"
+    container_name: phpmyadmin22
+    networks:
+      - mon_reseau
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile_front
+    ports:
+      - "3030:80"
+    container_name: frontend
+    networks:
+      - mon_reseau
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile_back
+    ports:
+      - "3031:80"
+    container_name: backend
+    networks:
+      - mon_reseau
+
+networks:
+  mon_reseau:
